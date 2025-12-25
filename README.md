@@ -1,3 +1,7 @@
-<a href="https://github.com/walidbosso">   
-<img align="left" src="https://private-user-images.githubusercontent.com/243741380/530222003-100159d7-3a67-4925-865d-cc5c0d979e6e.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjY2ODExODYsIm5iZiI6MTc2NjY4MDg4NiwicGF0aCI6Ii8yNDM3NDEzODAvNTMwMjIyMDAzLTEwMDE1OWQ3LTNhNjctNDkyNS04NjVkLWNjNWMwZDk3OWU2ZS5naWY_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUxMjI1JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MTIyNVQxNjQxMjZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xODlhOTRhZTBkYzM0YmRlMWJmMWEwN2U2MjcxM2M4ZTYxN2Y1ZWNiYjJmZDY1NTRiMTE3NDA2ZTU4YTk3NGU0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.QkAHP6VQhbxqiubz2G3YedkxvJ9gt-8WL_ELNtJD0Ks" width="300">
-</a>
+## My Contribution Graph
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kallardhanaa/kallardhanaa/output/pacman-contribution-graph-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/kallardhanaa/kallardhanaa/output/pacman-contribution-graph.svg">
+  <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/kallardhanaa/kallardhanaa/output/pacman-contribution-graph.svg">
+</picture>
