@@ -1,112 +1,219 @@
+name: Plane Crash Animation
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+jobs:
+  generate:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+      - uses: actions/checkout@v4
+      
       - name: Generate Plane Crash SVG
         run: |
           mkdir -p dist
           cat > dist/plane-crash.svg << 'EOF'
-          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <!-- Background Sky -->
-            <rect width="800" height="500" fill="#87CEEB"/>
+          <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Background -->
+              <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#B0E0E6;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            
+            <!-- Sky Background -->
+            <rect width="800" height="500" fill="url(#sky)"/>
             
             <!-- Sun -->
             <circle cx="700" cy="80" r="40" fill="#FFD700">
-              <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
             </circle>
             
-            <!-- Gedung 1 -->
+            <!-- Gedung Kiri -->
             <rect x="50" y="200" width="120" height="300" fill="#4A90E2" stroke="#2E5B9F" stroke-width="4"/>
-            <rect x="70" y="180" width="80" height="20" fill="#6AB0FF" stroke="#2E5B9F" stroke-width="2"/>
+            <rect x="70" y="180" width="80" height="20" fill="#6AB0FF"/>
             
-            <!-- Gedung 2 (TARGET) -->
-            <rect x="200" y="150" width="150" height="350" fill="#2E5B9F" stroke="#1A3A6D" stroke-width="6"/>
-            <rect x="230" y="130" width="90" height="20" fill="#4A90E2"/>
-            <rect x="250" y="110" width="70" height="20" fill="#6AB0FF"/>
+            <!-- Gedung Tengah (TARGET) -->
+            <rect x="200" y="120" width="160" height="380" fill="#2E5B9F" stroke="#1A3A6D" stroke-width="6"/>
+            <rect x="230" y="100" width="100" height="20" fill="#4A90E2"/>
             
-            <!-- Jendela -->
-            <rect x="220" y="190" width="15" height="25" fill="#B3D9FF" opacity="0.8"/>
-            <rect x="260" y="190" width="15" height="25" fill="#B3D9FF" opacity="0.8"/>
-            <rect x="300" y="190" width="15" height="25" fill="#B3D9FF" opacity="0.8"/>
-            <rect x="220" y="240" width="15" height="25" fill="#B3D9FF" opacity="0.8"/>
-            <rect x="260" y="240" width="15" height="25" fill="#B3D9FF" opacity="0.8"/>
-            <rect x="300" y="240" width="15" height="25" fill="#B3D9FF" opacity="0.8"/>
+            <!-- Windows Grid -->
+            <rect x="220" y="160" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="260" y="160" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="300" y="160" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="220" y="220" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="260" y="220" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="300" y="220" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="220" y="280" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="260" y="280" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
+            <rect x="300" y="280" width="20" height="30" fill="#B3D9FF" opacity="0.7"/>
             
-            <!-- Pesawat -->
-            <g id="plane">
-              <path d="M0 0 Q20 -10 40 0 L60 5 L40 10 Z" fill="#C0C0C0" stroke="#666" stroke-width="2"/>
-              <path d="M10 -5 L-10 0 L10 5" fill="#A0A0A0" stroke="#666" stroke-width="1.5"/>
-              <rect x="45" y="-3" width="15" height="6" rx="3" fill="#333"/>
+            <!-- Gedung Kanan -->
+            <rect x="400" y="180" width="140" height="320" fill="#5A9FD4" stroke="#3A7FB4" stroke-width="4"/>
+            
+            <!-- PESAWAT (terbang dari kiri ke gedung) -->
+            <g>
+              <path d="M0 0 Q25 -12 50 0 L70 6 L50 12 Q25 12 0 0" fill="#C0C0C0" stroke="#666" stroke-width="2">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,120; 100,130; 220,145; 280,160" 
+                  dur="4.5s" fill="freeze"/>
+                <animateTransform attributeName="transform" type="rotate" 
+                  values="0 35 6; -8 35 6; -20 35 6; -50 35 6" 
+                  dur="4.5s" additive="sum" fill="freeze"/>
+              </path>
               
-              <!-- Animasi Terbang + Rotasi -->
-              <animateTransform
-                attributeName="transform"
-                type="translate"
-                values="50,100; 150,110; 250,125; 320,150"
-                dur="5s"
-                fill="freeze"/>
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                values="0 30 5; -5 30 5; -15 30 5; -45 30 5"
-                dur="5s"
-                additive="sum"
-                fill="freeze"/>
+              <!-- Wings -->
+              <path d="M15 -8 L-15 0 L15 8" fill="#A0A0A0" stroke="#666" stroke-width="1.5">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,120; 100,130; 220,145; 280,160" 
+                  dur="4.5s" fill="freeze"/>
+                <animateTransform attributeName="transform" type="rotate" 
+                  values="0 0 0; -8 0 0; -20 0 0; -50 0 0" 
+                  dur="4.5s" additive="sum" fill="freeze"/>
+              </path>
+              
+              <!-- Engine -->
+              <rect x="55" y="-4" width="18" height="8" rx="4" fill="#333">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,120; 100,130; 220,145; 280,160" 
+                  dur="4.5s" fill="freeze"/>
+                <animateTransform attributeName="transform" type="rotate" 
+                  values="0 64 4; -8 64 4; -20 64 4; -50 64 4" 
+                  dur="4.5s" additive="sum" fill="freeze"/>
+              </rect>
             </g>
             
-            <!-- Ledakan Layer 1 (Outer) -->
-            <circle cx="325" cy="155" r="0" fill="#FF4444" opacity="0">
-              <animate attributeName="r" values="0;0;0;80;120" keyTimes="0;0.8;0.99;1;1" dur="6s" fill="freeze"/>
-              <animate attributeName="opacity" values="0;0;0.9;0.4;0" keyTimes="0;0.8;0.99;1;1" dur="6s" fill="freeze"/>
+            <!-- LEDAKAN BESAR (3 layers) -->
+            <circle cx="280" cy="165" r="0" fill="#FF2200" opacity="0">
+              <animate attributeName="r" 
+                values="0;0;0;5;90;140" 
+                keyTimes="0;0.7;0.899;0.9;0.95;1" 
+                dur="5s" fill="freeze"/>
+              <animate attributeName="opacity" 
+                values="0;0;0;0.9;0.5;0" 
+                keyTimes="0;0.7;0.899;0.9;0.95;1" 
+                dur="5s" fill="freeze"/>
             </circle>
             
-            <!-- Ledakan Layer 2 (Middle) -->
-            <circle cx="325" cy="155" r="0" fill="#FF8800" opacity="0">
-              <animate attributeName="r" values="0;0;0;50;90" keyTimes="0;0.8;0.99;1;1" dur="6s" fill="freeze"/>
-              <animate attributeName="opacity" values="0;0;0.8;0.5;0" keyTimes="0;0.8;0.99;1;1" dur="6s" fill="freeze"/>
+            <circle cx="280" cy="165" r="0" fill="#FF6600" opacity="0">
+              <animate attributeName="r" 
+                values="0;0;0;3;60;100" 
+                keyTimes="0;0.7;0.899;0.9;0.95;1" 
+                dur="5s" fill="freeze"/>
+              <animate attributeName="opacity" 
+                values="0;0;0;0.9;0.6;0" 
+                keyTimes="0;0.7;0.899;0.9;0.95;1" 
+                dur="5s" fill="freeze"/>
             </circle>
             
-            <!-- Ledakan Layer 3 (Core) -->
-            <circle cx="325" cy="155" r="0" fill="#FFFF44" opacity="0">
-              <animate attributeName="r" values="0;0;0;30;60" keyTimes="0;0.8;0.99;1;1" dur="6s" fill="freeze"/>
-              <animate attributeName="opacity" values="0;0;1;0.6;0" keyTimes="0;0.8;0.99;1;1" dur="6s" fill="freeze"/>
+            <circle cx="280" cy="165" r="0" fill="#FFFF00" opacity="0">
+              <animate attributeName="r" 
+                values="0;0;0;2;40;70" 
+                keyTimes="0;0.7;0.899;0.9;0.95;1" 
+                dur="5s" fill="freeze"/>
+              <animate attributeName="opacity" 
+                values="0;0;0;1;0.7;0" 
+                keyTimes="0;0.7;0.899;0.9;0.95;1" 
+                dur="5s" fill="freeze"/>
             </circle>
             
-            <!-- Debris 1 -->
-            <rect x="325" y="155" width="8" height="3" fill="#666" opacity="0">
-              <animateTransform attributeName="transform" type="translate" values="0,0;0,0;0,0;60,-40;80,-60" keyTimes="0;0.8;0.99;1;1" dur="6s"/>
-              <animate attributeName="opacity" values="0;0;1;0.5;0" keyTimes="0;0.8;0.99;1;1" dur="6s"/>
+            <!-- DEBRIS FLYING -->
+            <rect x="280" y="165" width="12" height="5" fill="#555" opacity="0">
+              <animateTransform attributeName="transform" type="translate" 
+                values="0,0;0,0;0,0;70,-50;100,-80" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s"/>
+              <animateTransform attributeName="transform" type="rotate" 
+                values="0 6 2.5;0 6 2.5;0 6 2.5;120 6 2.5;240 6 2.5" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s" additive="sum"/>
+              <animate attributeName="opacity" 
+                values="0;0;0;1;0" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s"/>
             </rect>
             
-            <!-- Debris 2 -->
-            <circle cx="330" cy="160" r="4" fill="#999" opacity="0">
-              <animateTransform attributeName="transform" type="translate" values="0,0;0,0;0,0;-40,60;-60,90" keyTimes="0;0.8;0.99;1;1" dur="6s"/>
-              <animate attributeName="opacity" values="0;0;1;0.4;0" keyTimes="0;0.8;0.99;1;1" dur="6s"/>
+            <circle cx="285" cy="170" r="6" fill="#777" opacity="0">
+              <animateTransform attributeName="transform" type="translate" 
+                values="0,0;0,0;0,0;-50,70;-80,120" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s"/>
+              <animate attributeName="opacity" 
+                values="0;0;0;1;0" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s"/>
             </circle>
             
-            <!-- Debris 3 -->
-            <path d="M335 158 L345 153 L340 163 Z" fill="#555" opacity="0">
-              <animateTransform attributeName="transform" type="translate" values="0,0;0,0;0,0;30,70;50,110" keyTimes="0;0.8;0.99;1;1" dur="6s"/>
-              <animateTransform attributeName="transform" type="rotate" values="0 340 160;0 340 160;0 340 160;180 340 160;360 340 160" keyTimes="0;0.8;0.99;1;1" dur="6s" additive="sum"/>
-              <animate attributeName="opacity" values="0;0;1;0.3;0" keyTimes="0;0.8;0.99;1;1" dur="6s"/>
-            </circle>
+            <path d="M290 168 L305 162 L295 178 Z" fill="#444" opacity="0">
+              <animateTransform attributeName="transform" type="translate" 
+                values="0,0;0,0;0,0;40,80;70,140" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s"/>
+              <animateTransform attributeName="transform" type="rotate" 
+                values="0 297 169;0 297 169;0 297 169;-180 297 169;-360 297 169" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s" additive="sum"/>
+              <animate attributeName="opacity" 
+                values="0;0;0;1;0" 
+                keyTimes="0;0.7;0.899;0.95;1" 
+                dur="5s"/>
+            </path>
             
-            <!-- Api Berkobar -->
+            <!-- API BERKOBAR (loop forever setelah ledakan) -->
             <g opacity="0">
-              <path d="M315 165 Q325 145 335 165 Q330 185 320 165" fill="#FF4400">
-                <animateTransform attributeName="transform" type="translate" values="0,0;5,-10;-3,8;0,0" dur="0.4s" repeatCount="indefinite"/>
+              <path d="M270 175 Q280 150 290 175 Q285 200 275 175" fill="#FF4400">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,0;8,-12;-5,10;0,0" dur="0.35s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.8;1;0.8" dur="0.35s" repeatCount="indefinite"/>
               </path>
-              <path d="M320 170 Q325 155 330 170 Q327 180 322 170" fill="#FF8800">
-                <animateTransform attributeName="transform" type="translate" values="0,0;-3,8;5,-6;0,0" dur="0.3s" repeatCount="indefinite"/>
+              
+              <path d="M275 180 Q280 160 285 180 Q282 195 277 180" fill="#FF8800">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,0;-6,10;7,-8;0,0" dur="0.28s" repeatCount="indefinite"/>
               </path>
-              <animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.8;0.99;1" dur="6s" fill="freeze"/>
+              
+              <path d="M278 183 Q280 170 282 183 Q281 190 279 183" fill="#FFCC00">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,0;3,-6;-2,5;0,0" dur="0.22s" repeatCount="indefinite"/>
+              </path>
+              
+              <animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.7;0.95;1" dur="5s" fill="freeze"/>
             </g>
             
-            <!-- Asap Hitam -->
+            <!-- ASAP HITAM -->
             <g opacity="0">
-              <circle cx="325" cy="180" r="15" fill="#333" opacity="0.6">
-                <animateTransform attributeName="transform" type="translate" values="0,0;-20,-40;-30,-80" dur="3s" repeatCount="indefinite"/>
-                <animate attributeName="r" values="15;30;45" dur="3s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0.6;0.3;0" dur="3s" repeatCount="indefinite"/>
+              <circle cx="280" cy="190" r="18" fill="#222" opacity="0.5">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,0;-25,-50;-40,-100;-50,-150" 
+                  dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="r" values="18;35;50;60" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.5;0.3;0.1;0" dur="4s" repeatCount="indefinite"/>
               </circle>
-              <animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.8;0.99;1" dur="6s" fill="freeze"/>
+              
+              <circle cx="285" cy="195" r="15" fill="#333" opacity="0.6">
+                <animateTransform attributeName="transform" type="translate" 
+                  values="0,0;-15,-45;-30,-95;-42,-145" 
+                  begin="0.8s" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="r" values="15;30;45;55" begin="0.8s" dur="4s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.6;0.4;0.15;0" begin="0.8s" dur="4s" repeatCount="indefinite"/>
+              </circle>
+              
+              <animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.7;0.95;1" dur="5s" fill="freeze"/>
             </g>
           </svg>
           EOF
-
+      
+      - name: Push to output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
