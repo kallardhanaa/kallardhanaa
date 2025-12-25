@@ -6,6 +6,12 @@
 
 </div>
 
+## ✈️ Plane Crash Animation
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/kallardhanaa/kallardhanaa/output/plane-crash.svg" width="800" alt="Plane Crash Animation"/>
+</div>
+
 ## 🎮 My Contribution Graph
 
 <picture>
